@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+<title>Tasbeeha</title>
+<meta name="theme-color" content="#0a1114">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Tasbeeha">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<link rel="icon" type="image/png" href="icons/icon-192.png">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600&display=swap">
+<style>
+  :root{
+    color-scheme: dark;
+    --ground:#0a1114;
+    --pattern:#111c20;
+    --body:#1c1f21;
+    --body-edge:#0e1011;
+    --lcd:#7ff6fb;
+    --lcd-deep:#4fdde6;
+    --seg-on:#121516;
+    --seg-off:rgba(18,21,22,.07);
+    --text:#9fb3b8;
+    --muted:#5c6c70;
+  }
+  html,body{height:100%}
+  body{
+    margin:0;background:var(--ground);color:var(--text);
+    font-family:"Nunito Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+    background-image:
+      linear-gradient(45deg,transparent 46%,var(--pattern) 46%,var(--pattern) 54%,transparent 54%),
+      linear-gradient(-45deg,transparent 46%,var(--pattern) 46%,var(--pattern) 54%,transparent 54%);
+    background-size:72px 72px;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    padding-inline:16px;box-sizing:border-box;
+    -webkit-tap-highlight-color:transparent;user-select:none;-webkit-user-select:none;
+  }
+  .wrap{display:flex;flex-direction:column;align-items:center;gap:18px;width:100%;max-width:340px;padding-block:16px}
+  h1{
+    margin:0;display:flex;align-items:center;gap:14px;
+    font-family:"Cinzel",Georgia,"Times New Roman",serif;font-weight:600;
+    font-size:clamp(28px,9vw,38px);letter-spacing:.12em;line-height:1;
+    background:linear-gradient(180deg,#e9feff 0%,var(--lcd) 55%,var(--lcd-deep) 100%);
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+    filter:drop-shadow(0 0 10px rgba(127,246,251,.35));
+  }
+  h1::before,h1::after{content:"";width:34px;height:1px;background:linear-gradient(90deg,transparent,var(--lcd));flex:none}
+  h1::after{background:linear-gradient(270deg,transparent,var(--lcd))}
+  .device{
+    position:relative;width:100%;aspect-ratio:0.72;max-width:100%;
+    display:flex;flex-direction:column;align-items:center;
+  }
+  .strap{position:absolute;left:50%;transform:translateX(-50%);width:36%;background:#16191a;border-radius:60px;
+    box-shadow:inset 0 0 0 1px #242829}
+  .strap.top{top:0;height:30%}
+  .strap.bot{bottom:0;height:22%}
+  .strap::after{content:"";position:absolute;left:50%;transform:translateX(-50%);width:22px;height:22px;border-radius:50%;
+    background:var(--ground);box-shadow:inset 0 2px 3px #000}
+  .strap.top::after{top:22%}
+  .strap.bot::after{bottom:22%}
+  .shell{
+    position:absolute;top:22%;left:4%;right:4%;bottom:10%;
+    background:radial-gradient(120% 80% at 50% 20%,#26292b,var(--body) 55%,var(--body-edge));
+    border-radius:34% 34% 42% 42% / 22% 22% 30% 30%;
+    box-shadow:0 20px 50px rgba(0,0,0,.7),inset 0 1px 0 #34383a;
+    display:flex;flex-direction:column;align-items:center;padding-top:9%;box-sizing:border-box;
+  }
+  .bezel{width:86%;background:#050606;border-radius:20px;padding:5% 3%;box-sizing:border-box}
+  .lcd{
+    background:linear-gradient(180deg,var(--lcd),var(--lcd-deep));
+    border-radius:8px;padding:6% 5%;
+    box-shadow:0 0 22px rgba(127,246,251,.45),inset 0 0 12px rgba(0,60,70,.35);
+    display:flex;justify-content:flex-end;gap:4%;
+  }
+  .lcd svg{width:15%;height:auto;display:block}
+  .controls{position:relative;width:100%;flex:1;display:flex;align-items:center;justify-content:center}
+  button{font:inherit;cursor:pointer;border:0;padding:0}
+  button:focus-visible{outline:2px solid var(--lcd);outline-offset:4px}
+  .count{
+    width:46%;aspect-ratio:1;border-radius:50%;
+    background:radial-gradient(circle at 50% 40%,#2c3032,#1a1d1e 70%);
+    box-shadow:0 0 0 6px #121415,0 0 0 8px #2a2e30,0 8px 16px rgba(0,0,0,.6),inset 0 2px 2px #3a3f41;
+    transition:transform .06s,box-shadow .06s;
+  }
+  .count:active,.count.pressed{transform:scale(.96);box-shadow:0 0 0 6px #121415,0 0 0 8px #2a2e30,0 2px 6px rgba(0,0,0,.6),inset 0 3px 8px #000}
+  .reset{
+    position:absolute;top:4%;right:15%;width:13%;aspect-ratio:1;border-radius:50%;
+    background:radial-gradient(circle at 50% 40%,#2b2f31,#151718);
+    box-shadow:0 0 0 3px #0d0f10,0 0 0 4px #3a3a2a,0 4px 8px rgba(0,0,0,.6);
+    transition:transform .06s;
+  }
+  .reset:active{transform:scale(.92)}
+  .hint{margin:0;font-size:13px;color:var(--muted);text-align:center;line-height:1.5}
+  .hint b{color:var(--text);font-weight:600}
+  .overlay{position:fixed;inset:0;background:rgba(3,6,7,.72);display:flex;align-items:center;justify-content:center;padding-inline:16px;z-index:10}
+  .dialog{width:100%;max-width:300px;background:#1b2023;border-radius:16px;padding:22px 20px 18px;box-sizing:border-box;
+    box-shadow:0 20px 50px rgba(0,0,0,.7),inset 0 1px 0 #2e3538;text-align:center;display:flex;flex-direction:column;gap:8px}
+  .dialog h2{margin:0;font-size:18px;color:#e6f4f5}
+  .dialog p{margin:0 0 10px;font-size:14px;color:var(--text);line-height:1.45}
+  .dialog p b{color:var(--lcd);font-variant-numeric:tabular-nums}
+  .actions{display:flex;gap:10px}
+  .actions button{flex:1;padding:12px 0;border-radius:10px;font-size:16px;font-weight:600}
+  .no{background:var(--lcd);color:#082226}
+  .yes{background:#2a3134;color:#f1a5a0}
+  @media (prefers-reduced-motion:reduce){.count,.reset{transition:none}}
+  :root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+  html{background:#0a1114}
+  button{touch-action:manipulation}
+  [hidden]{display:none!important}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <h1>Tasbeeha</h1>
+  <div class="device">
+    <div class="strap top"></div>
+    <div class="strap bot"></div>
+    <div class="shell">
+      <div class="bezel"><div class="lcd" id="lcd" aria-live="polite" aria-label="Count 0"></div></div>
+      <div class="controls">
+        <button class="count" id="countBtn" aria-label="Add one"></button>
+        <button class="reset" id="resetBtn" aria-label="Reset to zero"></button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="overlay" id="overlay" hidden>
+  <div class="dialog" role="alertdialog" aria-modal="true" aria-labelledby="dlgTitle" aria-describedby="dlgText">
+    <h2 id="dlgTitle">Reset counter?</h2>
+    <p id="dlgText">Your count of <b id="dlgCount">0</b> will go back to 0.</p>
+    <div class="actions">
+      <button class="no" id="noBtn">No, keep</button>
+      <button class="yes" id="yesBtn">Yes, reset</button>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+  const DIGITS = 5;
+  const MAP = {0:"abcdef",1:"bc",2:"abged",3:"abgcd",4:"fgbc",5:"afgcd",6:"afgedc",7:"abc",8:"abcdefg",9:"abcdfg"};
+  const h=(y,x1,x2)=>`${x1},${y} ${x1+5},${y-5} ${x2-5},${y-5} ${x2},${y} ${x2-5},${y+5} ${x1+5},${y+5}`;
+  const v=(x,y1,y2)=>`${x},${y1} ${x+5},${y1+5} ${x+5},${y2-5} ${x},${y2} ${x-5},${y2-5} ${x-5},${y1+5}`;
+  const SEG = {a:h(6,8,52),g:h(54,8,52),d:h(102,8,52),f:v(6,8,52),b:v(54,8,52),e:v(6,56,100),c:v(54,56,100)};
+
+  const lcd = document.getElementById('lcd');
+  const cells = [];
+  for(let i=0;i<DIGITS;i++){
+    const svg = document.createElementNS('http://www.w3.org/2000/svg','svg');
+    svg.setAttribute('viewBox','-2 -2 64 112');
+    svg.setAttribute('aria-hidden','true');
+    const polys = {};
+    for(const k in SEG){
+      const p = document.createElementNS('http://www.w3.org/2000/svg','polygon');
+      p.setAttribute('points',SEG[k]);
+      svg.appendChild(p); polys[k]=p;
+    }
+    lcd.appendChild(svg); cells.push(polys);
+  }
+
+  let count = 0;
+  try{ count = parseInt(localStorage.getItem('tasbeeha-count')||'0',10)||0; }catch(e){}
+
+  function render(){
+    const s = String(count % 100000).padStart(DIGITS,' ');
+    cells.forEach((polys,i)=>{
+      const on = s[i]===' ' ? '' : MAP[s[i]];
+      for(const k in polys) polys[k].setAttribute('fill', on.includes(k) ? 'var(--seg-on)' : 'var(--seg-off)');
+    });
+    lcd.setAttribute('aria-label','Count '+count);
+    try{ localStorage.setItem('tasbeeha-count',String(count)); }catch(e){}
+  }
+  function buzz(ms){ try{ navigator.vibrate && navigator.vibrate(ms); }catch(e){} }
+
+  const countBtn = document.getElementById('countBtn');
+  countBtn.addEventListener('click',()=>{ count++; buzz(15); render(); });
+  const overlay = document.getElementById('overlay');
+  const resetBtn = document.getElementById('resetBtn');
+  const noBtn = document.getElementById('noBtn');
+  function closeDialog(){ overlay.hidden = true; countBtn.focus(); }
+  resetBtn.addEventListener('click',()=>{
+    if(count===0) return;
+    document.getElementById('dlgCount').textContent = count;
+    overlay.hidden = false; buzz(40); noBtn.focus();
+  });
+  noBtn.addEventListener('click',closeDialog);
+  document.getElementById('yesBtn').addEventListener('click',()=>{ count=0; buzz([30,40,30]); render(); closeDialog(); });
+  overlay.addEventListener('click',e=>{ if(e.target===overlay) closeDialog(); });
+  document.addEventListener('keydown',e=>{
+    if(!overlay.hidden){ if(e.key==='Escape') closeDialog(); return; }
+    if((e.key===' '||e.key==='Enter') && document.activeElement!==document.getElementById('resetBtn')){
+      if(document.activeElement===countBtn) return; // button's own click handles it
+      e.preventDefault(); count++; render();
+      countBtn.classList.add('pressed'); setTimeout(()=>countBtn.classList.remove('pressed'),80);
+    }
+  });
+  render();
+})();
+</script>
+
+<script>
+if('serviceWorker' in navigator){ window.addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{})); }
+</script>
+</body>
+</html>
